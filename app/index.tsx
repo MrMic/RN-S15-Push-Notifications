@@ -2,7 +2,17 @@ import { StatusBar } from "expo-status-bar";
 import { Button, View } from "react-native";
 import * as Notifications from "expo-notifications";
 
+// ╾────────────────────────────────────────────────────────────────────╼
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+})
+
 export default function Index() {
+  // ______________________________________________________________________
   function scheduleNotificationHandler() {
     Notifications.scheduleNotificationAsync({
       content: {
