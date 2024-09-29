@@ -13,16 +13,28 @@ Notifications.setNotificationHandler({
 })
 
 export default function Index() {
+  // ╾╼ * INFO: HOOK ╾──────────────────────────────────────────────────╼
   useEffect(() => {
-    const subscription = Notifications.addNotificationReceivedListener((notification) => {
-      console.log("NOTIFICATION RECEIVED");
+    // ______________________________________________________________________
+    const subscription1 = Notifications.addNotificationReceivedListener((notification) => {
+      console.log("🎇 NOTIFICATION RECEIVED");
       console.log(notification);
-      const userName = notification.request.content.data.userName;
-      console.log(userName);
-    })
+      // const userName = notification.request.content.data.userName;
+      // console.log(userName);
+    });
 
+    // ______________________________________________________________________
+    const subscription2 = Notifications.addNotificationResponseReceivedListener((response) => {
+      console.log("🎉 NOTIFICATION 👉 RESPONSE 👈 RECEIVED");
+      console.log(response);
+      const userName = response.notification.request.content.data.userName;
+      console.log(userName);
+    });
+
+    // ______________________________________________________________________
     return () => {
-      subscription.remove();
+      subscription1.remove();
+      subscription2.remove();
     }
   }, []);
 
