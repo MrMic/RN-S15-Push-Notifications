@@ -16,7 +16,7 @@ Notifications.setNotificationHandler({
 export default function Index() {
   // ╾╼ * INFO: HOOK ╾──────────────────────────────────────────────────╼
   useEffect(() => {
-    // ______________________________________________________________________
+    // 👇 _______________________________________________________________ 👇
     async function configurePushNotifications() {
       const { status } = await Notifications.getPermissionsAsync();
       let finalStatus = status;
@@ -35,6 +35,7 @@ export default function Index() {
         projectId: process.env.PROJECT_ID || "",
       });
       console.log("👉 pushTokenData:", pushTokenData);
+      // TODO:  ⚠ Send push token to backend
 
       if (Platform.OS === "android") {
         Notifications.setNotificationChannelAsync("default", {
@@ -88,15 +89,37 @@ export default function Index() {
     });
   }
 
+  function sendPushNotificationHandler() {
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: "ExponentPushToken[dmgKDNCRT5JB-hPdFoU_MM]",
+        title: "TEST - Push Notification",
+        body: "This a test!",
+      }),
+    })
+  }
+
+  // ══════════════════════════════════════════════════════════════════════
   return (
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
+        justifyContent: "space-evenly",
         alignItems: "center",
       }}
     >
-      <Button title="Schedule Notification" onPress={scheduleNotificationHandler} />
+      <Button
+        title="Schedule Notification"
+        onPress={scheduleNotificationHandler}
+      />
+      <Button
+        title="Send Push Notification"
+        onPress={sendPushNotificationHandler}
+      />
 
       <StatusBar style="auto" />
     </View>
