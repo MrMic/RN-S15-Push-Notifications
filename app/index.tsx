@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, View } from "react-native";
+import { Alert, Button, Platform, View } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useEffect } from "react";
 
@@ -15,14 +15,40 @@ Notifications.setNotificationHandler({
 
 export default function Index() {
   // ╾╼ * INFO: HOOK ╾──────────────────────────────────────────────────╼
-
   useEffect(() => {
-    Notifications.getExpoPushTokenAsync({
-      projectId: process.env.PROJECT_ID || "",
-    }).then((pushTokenData) => {
-      console.log("🪚 pushToken:", pushTokenData);
-    });
+    // ______________________________________________________________________
+    async function configurePushNotifications() {
+      const { status } = await Notifications.getPermissionsAsync();
+      let finalStatus = status;
+
+      if (finalStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== "granted") {
+        Alert.alert("Permission required", "Please enable notifications in your settings");
+        return;
+      }
+
+      const pushTokenData = await Notifications.getExpoPushTokenAsync({
+        projectId: process.env.PROJECT_ID || "",
+      });
+      console.log("👉 pushTokenData:", pushTokenData);
+
+      if (Platform.OS === "android") {
+        Notifications.setNotificationChannelAsync("default", {
+          name: "default",
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: "#FF231F7C",
+        });
+      }
+    }
+    // ______________________________________________________________________
+    configurePushNotifications();
   }, []);
+
 
   useEffect(() => {
     // ______________________________________________________________________
