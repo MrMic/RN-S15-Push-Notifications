@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "RN-Push-Notifications",
-    "slug": "RN-Push-Notifications",
+    "slug": "rn-push-notifications",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -39,6 +39,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e6fca068-d6cd-4f53-bbb7-fd813437fa31"
+      }
+    },
+    "owner": "mrmic"
   }
 }

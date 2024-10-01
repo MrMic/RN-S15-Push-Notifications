@@ -12,8 +12,18 @@ Notifications.setNotificationHandler({
   }),
 })
 
+
 export default function Index() {
   // ╾╼ * INFO: HOOK ╾──────────────────────────────────────────────────╼
+
+  useEffect(() => {
+    Notifications.getExpoPushTokenAsync({
+      projectId: process.env.PROJECT_ID || "",
+    }).then((pushTokenData) => {
+      console.log("🪚 pushToken:", pushTokenData);
+    });
+  }, []);
+
   useEffect(() => {
     // ______________________________________________________________________
     const subscription1 = Notifications.addNotificationReceivedListener((notification) => {
